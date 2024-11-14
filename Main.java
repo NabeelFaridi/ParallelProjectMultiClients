@@ -20,7 +20,7 @@ public class Main {
         System.out.println("TCPServer started with " + serverThreadCount + " threads...");
 
         // Optionally, start multiple clients for testing purposes
-        int numberOfClients = 20; // Number of client instances to start
+        int numberOfClients = 10; // Number of client instances to start
         for (int i = 0; i < numberOfClients; i++) {
             final int clientId = i + 1;
             new Thread(() -> {

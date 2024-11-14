@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class TCPServerRouter {
     private static final int ROUTER_PORT = 12345;
-    private ConcurrentHashMap<Integer, Socket> connectionMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Socket> RTable = new ConcurrentHashMap<>(); // Dynamic routing table
 
     public static void main(String[] args) {
         TCPServerRouter router = new TCPServerRouter();
@@ -19,24 +19,12 @@ public class TCPServerRouter {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket);
 
-                // Route the client to a server using SThread
-                SThread thread = new SThread(clientSocket, this);
+                // Create a new SThread with the routing table and client socket
+                SThread thread = new SThread(RTable, clientSocket);
                 new Thread(thread).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addConnection(int clientId, Socket serverSocket) {
-        connectionMap.put(clientId, serverSocket);
-    }
-
-    public Socket getConnection(int clientId) {
-        return connectionMap.get(clientId);
-    }
-
-    public void removeConnection(int clientId) {
-        connectionMap.remove(clientId);
     }
 }
